@@ -1,0 +1,78 @@
+table {
+  width: 100%;
+  margin-bottom: 20px;
+  border: 5px solid #fff;
+  border-top: 5px solid #fff;
+  border-bottom: 3px solid #fff;
+  border-collapse: collapse;
+  outline: 3px solid #ffd300;
+  font-size: 15px;
+  background: #fff !important;
+}
+
+table th {
+  font-weight: bold;
+  padding: 7px;
+  background: #ffd300;
+  border: none;
+  text-align: left;
+  font-size: 15px;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #ffd300;
+}
+
+table td {
+  padding: 7px;
+  border: none;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  font-size: 15px;
+}
+
+table tbody tr:nth-child(even) {
+  background: #f8f8f8 !important;
+}
+
+table td a {
+  text-decoration: none;
+}
+
+.order-info {
+  width: 40%;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.price {
+  font-weight: bold;
+  color: #e53935;
+  font-size: 1.2em;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

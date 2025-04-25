@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CoffeeN - Корзина</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    {% block content %}
+
+    <div class="cart">
+        {% with total_items=cart|length %}
+            {% if cart|length > 0 %}
+
+            <h1>Ваша корзина:</h1>
+            <table class="cart">
+                <thead>
+                    <tr>
+                        <th>Изображение</th>
+                        <th>Товар</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                        <th>Итого</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    {% with product=item.product %}
+                    <tr>
+                        <td><img src="{% static 'img/coffee0.jpg' %}" width="400" height="250" alt="Coffee0"></td>
+                        <td>{{ product.name }}</td>
+                        <td>
+                            <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
+                                {{ item.update_quantity_form.quantity }}
+                                {{ item.update_quantity_form.override }}
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10"
+                                    style="margin-left: 10px; width: 50px">
+                                <input type="hidden" name="update" value="true" style="margin-left: 10px">
+                                <input type="submit" value="Обновить">
+                                {% csrf_token %}
+                            </form>
+                        </td>
+                        <td>{{ product.price }} руб.</td>
+                        <td>{{ item.total_price }}</td>
+                        <td>
+                            <form action="{% url 'cart:cart_remove'  product.product_id %}" method="post">
+                                <input type="submit" value="Удалить">
+                                {% csrf_token %}
+                            </form>
+                        </td>
+                    </tr>
+                    {% endwith %}
+                    {% endfor %}
+                    <tr class="total">
+                        <td>Всего</td>
+                        <td colspan="3"></td>
+                        <td style="font-weight: bold">{{ cart.get_total_price }}руб.</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <h1>В вашей корзине пусто.</h1>
+            {% endif %}
+        {% endwith %}
+    </div>
+    {% endblock %}
+    <a href="/">Вернуться на главную</a>
+</body>
+
+</html>

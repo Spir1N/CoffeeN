@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CoffeeN - Покупатели</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+    <h1>Список всех покупателей:</h1>
+    <table>
+        <tr>
+            <th>Номер клиента</th>
+            <th>Эл. почта</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Телефон</th>
+            <th>Дата регистрации</th>
+        </tr>
+        {% for customer in list_of_all_customers %}
+        <tr>
+            <td>{{ customer.customer_id }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.first_name }}</td>
+            <td>{{ customer.last_name }}</td>
+            <td>{{ customer.phone_number }}</td>
+            <td>{{ customer.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

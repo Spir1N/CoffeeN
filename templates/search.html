@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CoffeeN - Поиск заказов</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h1>Список заказов для:</h1>
+    <h2>{{ list_of_all_orders.0.customer }}</h2>
+    <table>
+      <tr>
+        <th>Номер заказа</th>
+        <th>Дата заказа</th>
+      </tr>
+      {% for order in list_of_all_orders %}
+      <tr>
+        <td>
+          <a href="{% url 'order-detail' order.order_id %}"
+            >{{ order.order_id }}</a>
+        </td>
+        <td>{{ order.order_date }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

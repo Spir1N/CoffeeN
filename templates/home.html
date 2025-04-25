@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CoffeeN</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <a href="{% url 'cart:cart_detail' %}">Корзина</a>
+    <p><a href="{% url 'orders' %}">Заказы</a></p>
+    <p><a href="{% url 'product_list' %}">Товары</a></p>
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <h1>Привет, {{ user.username }} ! Это мой магазин!</h1>
+    {% else %}
+    <p>Вы не вошли на сайт</p>
+    <a href="{% url 'login' %}">Войти</a>
+    {% endif %}
+  </body>
+</html>

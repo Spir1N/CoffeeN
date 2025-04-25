@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{% static 'img/coffee0.jpg' %}" width="400" height="250" alt="Coffee0">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description|truncatechars:100 }}</p>
+            <p class="price">{{ product.price }} ₽</p>
+            <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="update" value="False">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">В корзину</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
