@@ -11,7 +11,7 @@
   </head>
   <body>
     {% if user.is_authenticated %}
-    <h1>Привет, {{ user.username }} ! Это мой магазин!</h1>
+    <h1>Привет, {{ user.username }}! Это мой магазин!</h1>
     {% else %}
     <p>Вы не вошли на сайт</p>
     <a href="{% url 'login' %}">Войти</a>
