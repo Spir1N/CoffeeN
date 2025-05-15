@@ -63,11 +63,14 @@
             </table>
             {% else %}
             <h1>В вашей корзине пусто.</h1>
+                <h3><a href="{% url 'product_list' %}">Можете сделать свой первый заказ :)</a></h3> 
             {% endif %}
         {% endwith %}
     </div>
     {% endblock %}
     <a href="/">Вернуться на главную</a>
+    <p><a href="{% url 'orders' %}">Заказы</a></p>
+    <p><a href="{% url 'product_list' %}">Товары</a></p>
 </body>
 
 </html>

@@ -21,7 +21,7 @@
             <td>
                 <a href="{% url 'order-detail' order.order_id %}">{{order.order_id }}</a>
             </td>
-            <td>{{ order.order_date }}</td>
+            <td>{{ order.order_date|date:"d-m-Y" }}</td>
             <td>{{ order.status }}</td>
             <td>{{ order.price }}</td>
             <td>{{ order.customer }}</td>
@@ -32,6 +32,7 @@
             <input name="q" type="text" placeholder="Введите имя или фамилию...">
         </form>
     </table>
-    <a href="/">Вернуться на главную</a>
+    <a href="{% url 'cart:cart_detail' %}">Корзина</a>
+    <p><a href="/">Вернуться на главную</a></p>
 </body>
 </html>

@@ -22,5 +22,8 @@
         </div>
         {% endfor %}
     </div>
+    <a href="/">Вернуться на главную</a>
+    <p><a href="{% url 'orders' %}">Заказы</a></p>
+    <p><a href="{% url 'cart:cart_detail' %}">Корзина</a></p>
 </body>
 </html>
