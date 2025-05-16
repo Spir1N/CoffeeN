@@ -14,16 +14,21 @@ class Customer(models.Model):
     
 
 class Order(models.Model):
-    order_id = models.AutoField("ID", primary_key=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    order_date = models.DateField("Order Date")
-    status = models.SmallIntegerField("Status")
-    price = models.DecimalField("Price", max_digits=10, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    city = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    room = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    paid = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ('-created',)
 
     def __str__(self):
-        return f'Заказ № {self.order_id}'
+        return f'Заказ № {self.id}'
     
 
 class Product(models.Model):

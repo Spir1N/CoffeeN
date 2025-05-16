@@ -12,19 +12,19 @@
         <tr>
             <th>Номер заказа</th>
             <th>Дата заказа</th>
-            <th>Статус</th>
-            <th>Цена заказа</th>
+            <th>Город</th>
             <th>Покупатель</th>
+            <th>Сумма</th>
         </tr>
         {% for order in list_of_all_orders %}
         <tr>
             <td>
-                <a href="{% url 'order-detail' order.order_id %}">{{order.order_id }}</a>
+                <a href="{% url 'order-detail' order.id %}">{{order.id }}</a>
             </td>
-            <td>{{ order.order_date|date:"d-m-Y" }}</td>
-            <td>{{ order.status }}</td>
-            <td>{{ order.price }}</td>
-            <td>{{ order.customer }}</td>
+            <td>{{ order.created }}</td>
+            <td>{{ order.city }}</td>
+            <td>{{ order.first_name }}</td>
+            <td>{{ order.paid }}</td>
         </tr>
         {% endfor %}
         <form action="{% url 'search' %}" method="GET">

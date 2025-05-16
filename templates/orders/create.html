@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>  
+    {% block content %}
+    <h1>Заказ:</h1>
+    <div class="order-info">
+        <h3>Ваш заказ</h3>
+        <ul>
+            {% for item in cart %}
+            <li> {{ item.quantity }} шт. x {{ item.product.product_name }} на 
+                сумму <span> {{ item.total_price }} руб.</span> </li>
+            {% endfor %}
+        </ul>
+        <p>Всего: {{ cart.get_total_price }} руб.</p>
+    </div>
+    <form action=="." method="post" class="order-form">
+        {{ form.as_p }}
+        <p><input type="submit" value="Заказать"></p>
+        {% csrf_token %}
+    </form>
+    {% endblock %}
+    <a href="/">Вернуться на главную</a>
+</body>
+
+</html>

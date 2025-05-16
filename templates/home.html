@@ -15,6 +15,7 @@
     {% else %}
     <p>Вы не вошли на сайт</p>
     <a href="{% url 'login' %}">Войти</a>
+    <p><a href="{% url 'accounts:signup' %}">Зарегистрироваться</a></p>
     {% endif %}
   </body>
 </html>
