@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
-<body>  
+<body>
     {% block content %}
+    {% if cart %}
     <h1>Заказ:</h1>
     <div class="order-info">
         <h3>Ваш заказ</h3>
@@ -26,6 +27,9 @@
         <p><input type="submit" value="Заказать"></p>
         {% csrf_token %}
     </form>
+    {% else %}
+        <h1>Ваша корзина пуста</h1>
+    {% endif %}
     {% endblock %}
     <a href="{% url 'cart:cart_detail' %}">Корзина</a>
     <p><a href="/">Вернуться на главную</a></p>
