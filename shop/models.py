@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 class Customer(models.Model):
     customer_id = models.AutoField("ID", primary_key=True)
@@ -14,6 +15,7 @@ class Customer(models.Model):
     
 
 class Order(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders', verbose_name="Пользователь", null=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()

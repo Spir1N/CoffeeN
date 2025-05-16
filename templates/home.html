@@ -12,9 +12,15 @@
   <body>
     {% if user.is_authenticated %}
     <h1>Привет, {{ user.username }}! Это мой магазин!</h1>
+    <form action="{% url 'accounts:logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link">Выйти</button>
+    </form>
     {% else %}
     <p>Вы не вошли на сайт</p>
-    <a href="{% url 'login' %}">Войти</a>
+    <form action="{% url 'login' %}">
+        <button type="submit" class="btn btn-link">Войти</button>
+    </form>
     <p><a href="{% url 'accounts:signup' %}">Зарегистрироваться</a></p>
     {% endif %}
   </body>

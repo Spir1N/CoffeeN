@@ -18,6 +18,7 @@
             <th>Статус</th>
         </tr>
         {% for order in list_of_all_orders %}
+        {% if order.user == request.user %}
         <tr>
             <td>
                 <a href="{% url 'order-detail' order.id %}">{{ order.id }}</a>
@@ -28,6 +29,7 @@
             <td>{{ order.total_amount }}</td>
             <td>{{ order.paid|yesno:"Оплачен,Не оплачен" }}</td>
         </tr>
+        {% endif %}
         {% endfor %}
         <form action="{% url 'search' %}" method="GET">
             {% csrf_token %}
