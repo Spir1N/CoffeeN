@@ -14,17 +14,19 @@
             <th>Дата заказа</th>
             <th>Город</th>
             <th>Покупатель</th>
-            <th>Сумма</th>
+            <th>Сумма заказа</th>
+            <th>Статус</th>
         </tr>
         {% for order in list_of_all_orders %}
         <tr>
             <td>
-                <a href="{% url 'order-detail' order.id %}">{{order.id }}</a>
+                <a href="{% url 'order-detail' order.id %}">{{ order.id }}</a>
             </td>
-            <td>{{ order.created }}</td>
+            <td>{{ order.created|date:"d-m-Y" }}</td>
             <td>{{ order.city }}</td>
             <td>{{ order.first_name }}</td>
-            <td>{{ order.paid }}</td>
+            <td>{{ order.total_amount }}</td>
+            <td>{{ order.paid|yesno:"Оплачен,Не оплачен" }}</td>
         </tr>
         {% endfor %}
         <form action="{% url 'search' %}" method="GET">

@@ -27,7 +27,8 @@
         {% csrf_token %}
     </form>
     {% endblock %}
-    <a href="/">Вернуться на главную</a>
+    <a href="{% url 'cart:cart_detail' %}">Корзина</a>
+    <p><a href="/">Вернуться на главную</a></p>
 </body>
 
 </html>
