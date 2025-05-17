@@ -53,14 +53,23 @@
                     <h2>{{ product.name }}</h2>
                     <p class="price">{{ product.price }} ₽</p>
                     <div class="card-actions">
-                        <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="40"></button>
+                        <form action>
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="update" value="False">
+                            <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="40"></button>
+                        </form>
                         <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="update" value="False">
                             <button type="submit" class="icon-btn"><img src="{% static 'img/cart.png' %}" alt="В корзину" width="40"></button>
                         </form>
-                        <img src="{% static 'img/bean.png' %}" alt="Bean" width="50" height="50">
+                        <form>
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="update" value="False">
+                            <button type="submit" class="icon-btn"><img src="{% static 'img/bean.png' %}" alt="Bean" width="40" height="35"></button>
+                        </form>
                     </div>
                 </div>
             </div>
