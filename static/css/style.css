@@ -192,4 +192,6 @@ button:hover {
 .menu-item {
     font-size: 3rem;
     font-weight: bold;
+    text-decoration: None;
+    color: black;
 }
