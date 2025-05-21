@@ -57,18 +57,18 @@
                             {% csrf_token %}
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="update" value="False">
-                            <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="40"></button>
+                            <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="30"></button>
                         </form>
                         <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="update" value="False">
-                            <button type="submit" class="icon-btn"><img src="{% static 'img/cart.png' %}" alt="В корзину" width="40"></button>
+                            <button type="submit" class="icon-btn"><img src="{% static 'img/cart.png' %}" alt="В корзину" width="30"></button>
                         </form>
                         <form>
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="update" value="False">
-                            <button type="submit" class="icon-btn"><img src="{% static 'img/bean.png' %}" alt="Bean" width="40" height="35"></button>
+                            <button type="submit" class="icon-btn"><img src="{% static 'img/bean.png' %}" alt="Bean" width="30" height="30"></button>
                         </form>
                     </div>
                 </div>

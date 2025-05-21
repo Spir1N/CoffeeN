@@ -17,7 +17,7 @@ html {
 
 body {
     height: 100%;
-    margin: 0 30% 0 30%;
+    margin: 0 10% 0 10%;
     min-height: 100vh;
     max-width: 100vw;
     font-family: 'Segoe UI', sans-serif;
@@ -43,24 +43,30 @@ header {
 footer {
     background: var(--accent-color);
     box-sizing: border-box;
-    max-width: 100%;
+    max-width: 130%;
     background: #33333334;
     color: white;
     padding: 20px;
-    width: 100%;
-    bottom: 0;
+    width: 125%;
+    bottom: 1;
+    display: block;
+    margin-top: auto;
+    transform: translateY(100%);    
 } 
+
 
 main {
     flex: 1; /* Растягивает контент, прижимая футер вниз */
     width: 100%;
-    min-height: calc(100vh - 122px);
+    /* min-height: calc(100vh - 10%); */
 }
 
 .wrapper {
     display: flex;
+    flex: 1;
     flex-direction: column;
     min-height: 100vh; /* Минимальная высота = высоте экрана */
+    width: 100%;
 }
 
 .header-top, .footer-nav {
@@ -76,11 +82,12 @@ main {
     justify-content: left;
     padding: 1rem 0;
     margin-left: 1rem;
+    margin-top: 0.35rem;
 }
 
 .banner {
     width: 100%;
-    height: 200px;
+    height: 10%;
     background-color: #d9cfc2;
     margin-bottom: 1rem;
     background: linear-gradient(135deg, #8d6e63 0%, #d7ccc8 100%);
@@ -105,7 +112,7 @@ main {
     border-radius: 12px;
     box-shadow: 0 2px 16px rgba(0,0,0,0.04);
     padding: 1rem;
-    display: flex;
+    display: flex;  
     flex-direction: column;
     align-items: center;
     transition: all 0.3s ease;
