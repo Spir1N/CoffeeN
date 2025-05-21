@@ -1,11 +1,40 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>CoffeeN - Вход</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
   <!-- templates/registration/login.html -->
   <body>
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="logo"><h1>Logo</h1></div>
+            <nav class="nav">
+                <h1><a class="menu-item">Кофе</a></h1>
+            </nav>
+            <div class="icons">
+                <form>
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="update" value="False">
+                    <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Избранное" width="40"></button>
+                </form>
+                <form action="{% url 'cart:cart_detail' %}">
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="update" value="False">
+                    <button class="icon-btn"><img src="{% static 'img/cart.png' %}" alt="Корзина" width="40"></button>
+                </form>
+                <form>
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="update" value="False">
+                    <button class="icon-btn"><img src="{% static 'img/user.png' %}" alt="Профиль" width="40">
+                </form>
+            </div>
+        </div>
+    </header>
+    <p></p>
     <form method="post">
       {% csrf_token %}
       <label for="{{ form.username.id_for_label }}">Имя:</label>
