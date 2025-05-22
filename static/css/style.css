@@ -51,7 +51,7 @@ footer {
     bottom: 1;
     display: block;
     margin-top: auto;
-    transform: translateY(100%);    
+    transform: translateY(100%);   
 } 
 
 
@@ -69,10 +69,17 @@ main {
     width: 100%;
 }
 
-.header-top, .footer-nav {
+.header-top {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.footer-nav {
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
@@ -181,7 +188,7 @@ button:hover {
 
 .footer-links {
     display: flex;
-    gap: 4rem;
+    gap: 15rem;
     margin-top: 1rem;
     color: rgba(255,255,255,0.8);
     transition: color 0.2s;
@@ -201,4 +208,22 @@ button:hover {
     font-weight: bold;
     text-decoration: None;
     color: black;
+}
+
+.logo {
+    flex: 1; /* Занимает доступное пространство слева */
+}
+
+.nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Точное центрирование */
+}
+
+.icons {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Иконки прижимаем вправо */
+    /* white-space: nowrap;
+    z-index: 1; */
 }

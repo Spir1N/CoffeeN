@@ -5,11 +5,37 @@
     <meta charset="UTF-8" />
     <title>CoffeeN</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+   <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="menu-item"> <a class="menu-item" href="/">Logo</a></div>
+            <nav class="nav">
+                <a class="menu-item" href="{% url 'product_list' %}">Кофе</a>
+            </nav>
+            <div class="icons">
+                <form>
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="update" value="False">
+                    <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Избранное" width="40"></button>
+                </form>
+                <form action="{% url 'cart:cart_detail' %}">
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="update" value="False">
+                    <button class="icon-btn"><img src="{% static 'img/cart.png' %}" alt="Корзина" width="40"></button>
+                </form>
+                <form>
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="update" value="False">
+                    <button class="icon-btn"><img src="{% static 'img/user.png' %}" alt="Профиль" width="40">
+                </form>
+            </div>
+        </div>
+    </header>
     <a href="{% url 'cart:cart_detail' %}">Корзина</a>
     <p><a href="{% url 'orders' %}">Заказы</a></p>
     <p><a href="{% url 'product_list' %}">Товары</a></p>
-  </head>
-  <body>
     {% if user.is_authenticated %}
     <h1>Привет, {{ user.username }}! Это мой магазин!</h1>
     <form action="{% url 'accounts:logout' %}" method="post">
@@ -23,5 +49,28 @@
     </form>
     <p><a href="{% url 'accounts:signup' %}">Зарегистрироваться</a></p>
     {% endif %}
+    <!-- Footer -->
+    <footer>
+        <div class="footer-nav">
+            <div class="footer-links">
+                <div class="logo">Logo</div>
+                <div>
+                    <strong>Контакты</strong><br>
+                    .....<br>
+                    <a href="#"><img src="{% static 'img/send.png' %}" alt="VK" width="25"></a>
+                    <a href="#"><img src="{% static 'img/insta.png' %}" alt="Instagram" width="25"></a>
+                    <a href="#"><img src="{% static 'img/mail.png' %}" alt="Telegram" width="25"></a>
+                </div>
+                <div>
+                    <strong>О компании</strong><br>
+                    .....
+                </div>
+                <div>
+                    <strong>Помощь</strong><br>
+                    .....
+                </div>
+            </div>
+        </div>
+    </footer>
   </body>
 </html>
