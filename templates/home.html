@@ -33,7 +33,6 @@
             </div>
         </div>
     </header>
-    <a href="{% url 'cart:cart_detail' %}">Корзина</a>
     <p><a href="{% url 'orders' %}">Заказы</a></p>
     <p><a href="{% url 'product_list' %}">Товары</a></p>
     {% if user.is_authenticated %}

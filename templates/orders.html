@@ -21,7 +21,7 @@
         {% if order.user == request.user %}
         <tr>
             <td>
-                <a href="{% url 'order-detail' order.id %}">{{ order.id }}</a>
+                <a href="{% url 'order-detail' order.id %}">10238{{ order.id }}</a>
             </td>
             <td>{{ order.created|date:"d-m-Y" }}</td>
             <td>{{ order.city }}</td>
