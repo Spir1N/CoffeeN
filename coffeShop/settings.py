@@ -150,9 +150,9 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 
 # Настройки email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'letter.tpu.ru'
+EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'svu6@tpu.ru'
-EMAIL_HOST_PASSWORD = 'Vagant888444!!!'
-DEFAULT_FROM_EMAIL = 'svu6@tpu.ru'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
