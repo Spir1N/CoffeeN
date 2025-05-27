@@ -10,7 +10,7 @@ def order_created(id):
     Задача для отправки уведомления по электронной почте при успешном создании заказа
     """
     order = Order.objects.get(id=id)
-    subject = 'Заказ № {(id)}'
+    subject = f'Заказ № 1023{order.id} успешно оформлен'
     
     # Создаем HTML сообщение
     html_message = render_to_string('orders/order_email.html', {

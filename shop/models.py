@@ -58,4 +58,4 @@ class OrderItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f'Товар № {self.order_item_id}'
+        return f'{self.order_item_id}'

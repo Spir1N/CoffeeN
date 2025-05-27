@@ -6,17 +6,31 @@
 <body>
     <h2>Здравствуйте, {{ order.first_name }}!</h2>
     <p>Ваш заказ успешно оформлен.</p>
-    <p>Номер вашего заказа: <strong>{{ order.id }}</strong></p>
+    <p>Номер вашего заказа: <strong>1023{{ order.id }}</strong></p>
     
     <h3>Детали заказа:</h3>
     <ul>
-        {% for item in order.items.all %}
-        <li>
-            {{ item.product.name }} - {{ item.quantity }} шт. × {{ item.price }} руб.
-        </li>
-        {% endfor %}
+       <table>
+            <tr>
+                <th>Номер позиции заказа</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Товар</th>
+                <th>Дата создания</th>
+                <th>Дата последнего обновления</th>
+            </tr>
+            {% for order_item in order.order_items.all %}
+            <tr>
+                <td>{{ order_item.order_item_id }}</td>
+                <td>{{ order_item.price }}</td>
+                <td>{{ order_item.quantity }}</td>
+                <td>{{ order_item.product }}</td>
+                <td>{{ order_item.created_at|date:"d-m-Y" }}</td>
+                <td>{{ order_item.updated_at|date:"d-m-Y" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </ul>
-    
     <p>Спасибо за покупку!</p>
 </body>
 </html>
