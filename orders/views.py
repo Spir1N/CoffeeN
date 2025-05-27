@@ -3,6 +3,7 @@ from shop.models import OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
 from django.contrib.auth.decorators import login_required
+from .tasks import order_created
 
 def order_create(request):
     cart = Cart(request)
@@ -23,7 +24,7 @@ def order_create(request):
                 )
             
             cart.clear()
-            
+            order_created.delay(order.id)
             return render(request, 'orders/created.html', {'order': order})
     
     else:

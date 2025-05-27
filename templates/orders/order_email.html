@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ваш заказ принят</title>
+</head>
+<body>
+    <h2>Здравствуйте, {{ order.first_name }}!</h2>
+    <p>Ваш заказ успешно оформлен.</p>
+    <p>Номер вашего заказа: <strong>{{ order.id }}</strong></p>
+    
+    <h3>Детали заказа:</h3>
+    <ul>
+        {% for item in order.items.all %}
+        <li>
+            {{ item.product.name }} - {{ item.quantity }} шт. × {{ item.price }} руб.
+        </li>
+        {% endfor %}
+    </ul>
+    
+    <p>Спасибо за покупку!</p>
+</body>
+</html>
