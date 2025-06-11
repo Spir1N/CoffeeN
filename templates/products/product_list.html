@@ -47,18 +47,28 @@
     <main>
         <div class="product-grid">
             {% for product in products %}
+           
             <div class="product-card">
                 <img src="{% static 'img/coffee0.jpg' %}" alt="Изображение кофе">
                 <div class="card-info">
                     <h2>{{ product.name }}</h2>
                     <p class="price">{{ product.price }} ₽</p>
                     <div class="card-actions">
-                        <form action>
-                            {% csrf_token %}
+                        
+                        {% if product.product_id in favorite_ids %}
+                        <form action="{% url 'favorites:remove_from_favorites' product.product_id %}">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="update" value="False">
+                            <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="50"></button>
+                        </form>
+                        {% else %}
+                        <form action="{% url 'favorites:add_to_favorites' product.product_id %}">
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="update" value="False">
                             <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="30"></button>
                         </form>
+                        {% endif %}
+                            {% csrf_token %}
                         <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="quantity" value="1">

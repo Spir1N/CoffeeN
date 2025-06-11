@@ -4,6 +4,7 @@ from django.views.generic.list import ListView
 from shop.models import Customer, Order, Product
 from django.db.models import Q
 from django.shortcuts import render
+from favorites.models import Favorite
 
 
 class HomePageView(TemplateView):
@@ -41,3 +42,13 @@ class Products(ListView):
     context_object_name = "products"
 
 
+def product_list(request):
+    products = Product.objects.all()
+    favorite_ids = []
+    if request.user.is_authenticated:
+        favorite_ids = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
+
+    return render(request, 'products/product_list.html', {
+        'products': products,
+        'favorite_ids': favorite_ids
+    })

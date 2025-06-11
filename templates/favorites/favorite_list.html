@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CoffeeN - Корзина</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    {% block content %}
+    <h2>Мои избранные товары</h2>
+    {% if favorites %}
+        <ul>
+        {% for favorite in favorites %}
+            <li>
+            {{ favorite.product.name }} — {{ favorite.product.price }}₽
+            <a href="{% url 'favorites:remove_from_favorites' favorite.product_id %}">Удалить</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас пока нет избранных товаров.</p>
+    {% endif %}
+    {% endblock %}
+</body>
+
+</html>
