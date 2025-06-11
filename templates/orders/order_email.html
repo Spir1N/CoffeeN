@@ -10,7 +10,46 @@
     
     <h3>Детали заказа:</h3>
     <ul>
-       <table>
+       <table class="order-info">
+            <tr>
+                <th>Номер заказа:</th>
+                <td>1023{{ order.id }}</td>
+            </tr>
+            <tr>
+                <th>Дата заказа:</th>
+                <td>{{ order.created|date:"d-m-Y" }}</td>
+            </tr>
+            <tr>
+                <th>Статус:</th>
+                <td>{{ order.paid|yesno:"Оплачен,Не оплачен" }}</td>
+            </tr>
+            <tr>
+                <th>Цена заказа:</th>
+                <td>{{ order.total_amount }}</td>
+            </tr>
+            <tr>
+                <th>Имя покупателя:</th>
+                <td>{{ order.first_name }}</td>
+            </tr>
+            <tr>
+                <th>Фамилия покупателя:</th>
+                <td>{{ order.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Дата последнего обновления:</th>
+                <td>{{ order.updated|date:"d-m-Y" }}</td>
+            </tr>
+            <tr>
+                <th>Указанная почта:</th>
+                <td>{{ order.email }}</td>
+            </tr>
+            <tr>
+                <th>Город:</th>
+                <td>{{ order.city }}</td>
+            </tr>
+            </table>
+            <h1>Товары в заказе</h1>
+            <table>
             <tr>
                 <th>Номер позиции заказа</th>
                 <th>Цена</th>
@@ -28,7 +67,7 @@
                 <td>{{ order_item.created_at|date:"d-m-Y" }}</td>
                 <td>{{ order_item.updated_at|date:"d-m-Y" }}</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </table>
     </ul>
     <p>Спасибо за покупку!</p>
