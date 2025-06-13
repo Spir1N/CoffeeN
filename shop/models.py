@@ -4,9 +4,9 @@ from django.contrib.auth import get_user_model
 class Customer(models.Model):
     customer_id = models.AutoField("ID", primary_key=True)
     email = models.EmailField("E-mail", max_length=256)
-    first_name = models.CharField("First Name", max_length=256)
-    last_name = models.CharField("Last Name", max_length=256)
-    phone_number = models.CharField("Phone Number", max_length=20)
+    first_name = models.CharField("Имя", max_length=256)
+    last_name = models.CharField("Фамилия", max_length=256)
+    phone_number = models.CharField("Номер телефона", max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -16,12 +16,12 @@ class Customer(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders', verbose_name="Пользователь", null=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField()
-    city = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-    room = models.CharField(max_length=100)
+    first_name = models.CharField("Имя", max_length=50)
+    last_name = models.CharField("Фамилия", max_length=50)
+    email = models.EmailField("E-mail")
+    city = models.CharField("Город", max_length=100)
+    postal_code = models.CharField("Почтовый индекс", max_length=20)
+    room = models.CharField("Номенр дома и квартира", max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
@@ -36,10 +36,10 @@ class Order(models.Model):
 
 class Product(models.Model):
     product_id = models.AutoField("ID", primary_key=True)
-    name = models.CharField("Name", max_length=256)
-    price = models.DecimalField("Price", max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField("Quantity", default=0)
-    description = models.TextField("Description")
+    name = models.CharField("Название", max_length=256)
+    price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField("Количество", default=0)
+    description = models.TextField("Описание")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -52,8 +52,8 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, 
                               related_name='order_items')
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    price = models.DecimalField("Price", max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField("Quantity", default=1)
+    price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField("Количество", default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
