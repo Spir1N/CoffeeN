@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 
 class Customer(models.Model):
     customer_id = models.AutoField("ID", primary_key=True)
-    email = models.EmailField("E-mail", max_length=256)
+    email = models.EmailField("E-mail", max_length=256, unique=True)
     first_name = models.CharField("Имя", max_length=256)
     last_name = models.CharField("Фамилия", max_length=256)
     phone_number = models.CharField("Номер телефона", max_length=20)

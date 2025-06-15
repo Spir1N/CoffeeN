@@ -11,7 +11,7 @@ class Profile(models.Model):
     first_name = models.CharField("Имя", max_length=100, blank=True)
     last_name = models.CharField("Фамилия", max_length=100, blank=True)
     phone_number = models.CharField("Телефон", max_length=20, blank=True)
-    address = models.TextField("Адрес", blank=True)
+    address = models.TextField("Город", blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     def __str__(self):
