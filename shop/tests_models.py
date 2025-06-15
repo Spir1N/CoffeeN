@@ -44,16 +44,16 @@ class ProductModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.product = Product.objects.create(
-            name="Эспрессо",
+            name="Coffee №5",
             price=250.50,
             quantity=100,
-            description="Крепкий черный кофе"
+            description="Кофе с тёмной обжаркой"
         )
 
     def test_product_creation(self):
         self.assertEqual(self.product.price, 250.50)
         self.assertEqual(self.product.quantity, 100)
-        self.assertEqual(str(self.product), "Товар Эспрессо")
+        self.assertEqual(str(self.product), "Товар Coffee №5")
 
     def test_price_decimal_places(self):
         decimal_places = self.product._meta.get_field('price').decimal_places
@@ -61,9 +61,9 @@ class ProductModelTest(TestCase):
 
     def test_quantity_default(self):
         product = Product.objects.create(
-            name="Американо",
+            name="Черничный вулкан",
             price=300.00,
-            description="Кофе с водой"
+            description="Взрывная черника"
         )
         self.assertEqual(product.quantity, 0)
 
@@ -115,10 +115,10 @@ class OrderItemModelTest(TestCase):
         )
         
         cls.product = Product.objects.create(
-            name="Латте",
+            name="Спящий дракон",
             price=350.00,
             quantity=50,
-            description="Кофе с молоком"
+            description="Огненно тихий кофе"
         )
         
         cls.order = Order.objects.create(
@@ -144,7 +144,7 @@ class OrderItemModelTest(TestCase):
         self.assertEqual(str(self.order_item), str(self.order_item.order_item_id))
 
     def test_order_item_relations(self):
-        self.assertEqual(self.order_item.product.name, "Латте")
+        self.assertEqual(self.order_item.product.name, "Спящий дракон")
         self.assertEqual(self.order_item.order.email, "test@example.com")
 
 
