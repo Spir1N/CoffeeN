@@ -1,169 +1,205 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оформление заказа</title>
+    <title>Корзина</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>                
-        body {
-            background-color: #f5f5f5;
-            color: var(--text-color);
-            line-height: 1.6;
-            padding: 20px;
+    <style>
+        :root {
+            --primary-color: #6F4E37;
+            --secondary-color: #C4A484;
+            --light-color: #F5F5F5;
+            --dark-color: #333333;
+            --gray-color: #E0E0E0;
+            --white-color: #FFFFFF;
         }
-        
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
-        .checkout-container {
-            display: flex;
-            flex-wrap: wrap;
+
+        .cart-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
             gap: 30px;
             margin-top: 30px;
         }
-        
-        .order-section, .form-section {
-            flex: 1;
-            min-width: 100px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            padding: 30px;
-        }
-        
-        h1 {
+
+        .cart-header {
+            font-size: 28px;
             color: var(--primary-color);
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        h3 {
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .cart-section {
+            background-color: var(--white-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 20px;
             color: var(--primary-color);
+            margin-bottom: 15px;
         }
-        
-        .order-info ul {
-            list-style: none;
-            margin-bottom: 20px;
+
+        .cart-items {
+            margin-bottom: 30px;
         }
-        
-        .order-info li {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-color);
+        }
+
+        .item-name {
+            font-weight: 500;
+            flex: 2;
+        }
+
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .quantity-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid var(--gray-color);
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .item-price {
+            font-weight: 500;
+            flex: 1;
+            text-align: right;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        .total-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--secondary-color);
+            font-size: 18px;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
         }
-        
-        .order-info li:last-child {
-            border-bottom: none;
+
+        .order-info {
+            margin-top: 20px;
         }
-        
-        .order-info span {
+
+        .info-group {
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            padding: 8px;
+            background-color: var(--gray-color);
+            border-radius: 4px;
+        }
+
+        .comment {
+            font-style: italic;
+            color: #666;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-color);
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
             font-weight: 500;
         }
-        
-        .total-price {
-            font-size: 1.2em;
-            font-weight: 700;
-            text-align: right;
-            margin: 20px 0;
-            color: var(--primary-color);
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px 0;
         }
-        
-        .order-form p {
+
+        .empty-cart-icon {
+            font-size: 50px;
+            color: var(--secondary-color);
             margin-bottom: 20px;
         }
-        
-        .order-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--light-text);
-        }
-        
-        .order-form input, .order-form textarea, .order-form select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-        
-        .order-form input:focus, .order-form textarea:focus, .order-form select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
-        }
-        
+
         .btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            margin-top: 20px;
             width: 100%;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
-        
-        .empty-cart {
-            text-align: center;
-            padding: 50px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-top: 30px;
-        }
-        
-        .empty-cart i {
-            font-size: 50px;
-            color: var(--light-text);
-            margin-bottom: 20px;
-        }
-        
-        .navigation-links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        
-        .nav-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: color 0.3s;
-        }
-        
-        .nav-link:hover {
-            color: #3a5bef;
-            text-decoration: underline;
-        }
-        
+
         @media (max-width: 768px) {
-            .checkout-container {
-                flex-direction: column;
-            }
-            
-            .order-section, .form-section {
-                width: 100%;
+            .cart-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -173,66 +209,59 @@
     <div class="container">
         {% block content %}
         {% if cart %}
-        <h1><i class="fas fa-shopping-bag"></i> Оформление заказа</h1>
-            <div class="cart">
-            {% with total_items=cart|length %}
-                {% if cart|length > 0 %}
+        <h1 class="cart-header">Корзина</h1>
+        
+        <div class="cart-container">
+            <div class="cart-section">
+                <h2 class="section-title">Товар</h2>
+                <div class="cart-items">
+                    {% for item in cart %}
+                    {% with product=item.product %}
+                    <div class="cart-item">
+                        <div class="item-name">{{ product.name }}</div>
+                        <div class="item-quantity">
+                            <form action="{% url 'cart:cart_add' product.product_id %}" method="post" class="quantity-control" id="quantity-form-{{ product.product_id }}">
+                                {% csrf_token %}
+                                <button type="button" class="quantity-btn" onclick="updateQuantity('quantity-form-{{ product.product_id }}', -1)">-</button>
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10" class="quantity-input" 
+                                    onchange="document.getElementById('quantity-form-{{ product.product_id }}').submit()">
+                                <button type="button" class="quantity-btn" onclick="updateQuantity('quantity-form-{{ product.product_id }}', 1)">+</button>
+                                <input type="hidden" name="update" value="true">
+                            </form>
 
-                <h1>Ваша корзина:</h1>
-                <table class="cart">
-                    <thead>
-                        <tr>
-                            <th>Изображение</th>
-                            <th>Товар</th>
-                            <th>Количество</th>
-                            <th>Цена</th>
-                            <th>Итого</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in cart %}
-                        {% with product=item.product %}
-                        <tr>
-                            <td><img src="{% static 'img/coffee0.jpg' %}" width="100" height="70" alt="Coffee0"></td>
-                            <td>{{ product.name }}</td>
-                            <td>
-                                <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
-                                    {{ item.update_quantity_form.quantity }}
-                                    {{ item.update_quantity_form.override }}
-                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10"
-                                        style="margin-left: 10px; width: 50px">
-                                    <input type="hidden" name="update" value="true" style="margin-left: 10px">
-                                    <input type="submit" value="Обновить">
-                                    {% csrf_token %}
-                                </form>
-                            </td>
-                            <td>{{ product.price }} руб.</td>
-                            <td>{{ item.total_price }}</td>
-                            <td>
-                                <form action="{% url 'cart:cart_remove'  product.product_id %}" method="post">
-                                    <input type="submit" value="Удалить">
-                                    {% csrf_token %}
-                                </form>
-                            </td>
-                        </tr>
-                        {% endwith %}
-                        {% endfor %}
-                        <tr class="total-price">
-                            <td>Всего</td>
-                            <td colspan="3"></td>
-                            <td style="font-weight: bold">{{ cart.get_total_price }}руб.</td>
-                        </tr>
-                    </tbody>
-                </table>
-                {% else %}
-                <h1>В вашей корзине пусто.</h1>
-                    <h3><a href="{% url 'product_list' %}">Можете сделать свой первый заказ :)</a></h3> 
-                {% endif %}
-                <a href="{% url 'orders:order_create' %}">Оформить заказ</a>
-            {% endwith %}
-        </div>
+                            <form action="{% url 'cart:cart_remove' product.product_id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="remove-btn">Удалить</button>
+                            </form>
+
+                            <script>
+                            function updateQuantity(formId, change) {
+                                const form = document.getElementById(formId);
+                                const quantityInput = form.querySelector('input[type="number"]');
+                                let newValue = parseInt(quantityInput.value) + change;
+                                
+                                // Проверяем границы допустимых значений
+                                if (newValue < parseInt(quantityInput.min)) newValue = parseInt(quantityInput.min);
+                                if (newValue > parseInt(quantityInput.max)) newValue = parseInt(quantityInput.max);
+                                
+                                quantityInput.value = newValue;
+                                form.submit(); // Автоматически отправляем форму
+                            }
+                            </script>
+                        </div>
+                        <div class="item-price">{{ item.total_price }} ₽</div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+                
+                <div class="total-section">
+                    <span>Сумма</span>
+                    <span>{{ cart.get_total_price }} ₽</span>
+                </div>
+            </div>
             
-            <div class="form-section">
+           <div class="form-section">
                 <h3><i class="fas fa-user-circle"></i> Данные покупателя</h3>
                 <form action="." method="post" class="order-form">
                     {% csrf_token %}
@@ -253,24 +282,22 @@
                 </form>
             </div>
         </div>
+        
+        <div class="footer-links">
+            <a href="#" class="footer-link">Контакты</a>
+            <a href="#" class="footer-link">О компании</a>
+            <a href="#" class="footer-link">Помощь</a>
+        </div>
+        
         {% else %}
         <div class="empty-cart">
-            <i class="fas fa-shopping-cart"></i>
+            <div class="empty-cart-icon">🛒</div>
             <h1>Ваша корзина пуста</h1>
             <p>Прежде чем оформить заказ, добавьте товары в корзину</p>
+            <a href="{% url 'product_list' %}" class="btn" style="margin-top: 20px; display: inline-block; width: auto;">В каталог</a>
         </div>
         {% endif %}
         {% endblock %}
-        
-        <div class="navigation-links">
-            <a href="{% url 'cart:cart_detail' %}" class="nav-link">
-                <i class="fas fa-arrow-left"></i> Вернуться в корзину
-            </a>
-            <a href="/" class="nav-link">
-                <i class="fas fa-home"></i> На главную
-            </a>
-        </div>
     </div>
-</body>
-
+</body> 
 </html>

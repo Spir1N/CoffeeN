@@ -13,6 +13,7 @@ class Profile(models.Model):
     phone_number = models.CharField("Телефон", max_length=20, blank=True)
     address = models.TextField("Город", blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    username = models.CharField("Логин", max_length=255, blank=True)
 
     def __str__(self):
         return f"Профиль {self.user.username}"
@@ -22,6 +23,7 @@ class Profile(models.Model):
         self.user.first_name = self.first_name
         self.user.last_name = self.last_name
         self.user.email = self.email
+        self.user.username = self.username
         self.user.save()
 
     def sync_from_user(self):
@@ -29,6 +31,7 @@ class Profile(models.Model):
         self.first_name = self.user.first_name
         self.last_name = self.user.last_name
         self.email = self.user.email
+        self.username = self.user.username
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):

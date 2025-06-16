@@ -35,6 +35,8 @@
     </header>
     <p><a href="{% url 'orders' %}">Заказы</a></p>
     <p><a href="{% url 'product_list' %}">Товары</a></p>
+    <p><a href="{% url 'favorites:favorite_list' %}">Избранное</a></p>
+    <p><a href="{% url 'userprofile:profile' %}">Профиль</a></p>
     {% if user.is_authenticated %}
     <h1>Привет, {{ user.username }}! Это мой магазин!</h1>
     <form action="{% url 'accounts:logout' %}" method="post">
@@ -55,18 +57,18 @@
                 <div class="logo">Logo</div>
                 <div>
                     <strong>Контакты</strong><br>
-                    .....<br>
+                    <br>
                     <a href="#"><img src="{% static 'img/send.png' %}" alt="VK" width="25"></a>
                     <a href="#"><img src="{% static 'img/insta.png' %}" alt="Instagram" width="25"></a>
                     <a href="#"><img src="{% static 'img/mail.png' %}" alt="Telegram" width="25"></a>
                 </div>
                 <div>
                     <strong>О компании</strong><br>
-                    .....
+                    
                 </div>
                 <div>
                     <strong>Помощь</strong><br>
-                    .....
+                    
                 </div>
             </div>
         </div>

@@ -6,106 +6,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог кофе</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="header-top">
-            <div class="logo"> <a class="menu-item" href="/">Logo</a></div>
-            <nav class="nav">
-                <a class="menu-item" href="{% url 'product_list' %}">Кофе</a>
-            </nav>
-            <div class="icons">
-                <form>
-                    <input type="hidden" name="quantity" value="1">
-                    <input type="hidden" name="update" value="False">
-                    <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Избранное" width="40"></button>
-                </form>
-                <form action="{% url 'cart:cart_detail' %}">
-                    <input type="hidden" name="quantity" value="1">
-                    <input type="hidden" name="update" value="False">
-                    <button class="icon-btn"><img src="{% static 'img/cart.png' %}" alt="Корзина" width="40"></button>
-                </form>
-                <form>
-                    <input type="hidden" name="quantity" value="1">
-                    <input type="hidden" name="update" value="False">
-                    <button class="icon-btn"><img src="{% static 'img/user.png' %}" alt="Профиль" width="40">
-                </form>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a class="logo" href="/">LOGO</a>
+                <nav class="nav">
+                    <a class="nav__link active" href="{% url 'product_list' %}">Кофе</a>
+                </nav>
+                <div class="header__actions">
+                    <a href="{% url 'favorites:favorite_list' %}" class="action-btn">
+                        <img src="{% static 'img/heart.png' %}" alt="Избранное">
+                    </a>
+                    <a href="{% url 'cart:cart_detail' %}" class="action-btn">
+                        <img src="{% static 'img/cart.png' %}" alt="Корзина">
+                    </a>
+                    <a href="{% url 'userprofile:profile' %}" class="action-btn">
+                        <img src="{% static 'img/user.png' %}" alt="Профиль">
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Banner -->
-    <section class="banner">
-        <div class="filters">
-            <button>Фильтры</button>
-            <button>Сортировка</button>
-        </div>
-    </section>
-
-    <!-- Каталог товаров -->
-    <main>
-        <div class="product-grid">
-            {% for product in products %}
-           
-            <div class="product-card">
-                <img src="{% static 'img/coffee0.jpg' %}" alt="Изображение кофе">
-                <div class="card-info">
-                    <h2>{{ product.name }}</h2>
-                    <p class="price">{{ product.price }} ₽</p>
-                    <div class="card-actions">
-                        
-                        {% if product.product_id in favorite_ids %}
-                        <form action="{% url 'favorites:remove_from_favorites' product.product_id %}">
-                            <input type="hidden" name="quantity" value="1">
-                            <input type="hidden" name="update" value="False">
-                            <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="50"></button>
-                        </form>
-                        {% else %}
-                        <form action="{% url 'favorites:add_to_favorites' product.product_id %}">
-                            <input type="hidden" name="quantity" value="1">
-                            <input type="hidden" name="update" value="False">
-                            <button class="icon-btn"><img src="{% static 'img/heart.png' %}" alt="Like" width="30"></button>
-                        </form>
-                        {% endif %}
-                            {% csrf_token %}
-                        <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="quantity" value="1">
-                            <input type="hidden" name="update" value="False">
-                            <button type="submit" class="icon-btn"><img src="{% static 'img/cart.png' %}" alt="В корзину" width="30"></button>
-                        </form>
-                        <form>
-                            <input type="hidden" name="quantity" value="1">
-                            <input type="hidden" name="update" value="False">
-                            <button type="submit" class="icon-btn"><img src="{% static 'img/bean.png' %}" alt="Bean" width="30" height="30"></button>
-                        </form>
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Кофе</h1>
+                <div class="page-controls">
+                    <button class="control-btn">Сортировка</button>
+                    <button class="control-btn">Фильтры</button>
+                    <div class="search-box">
+                        <input type="text" placeholder="Поиск">
                     </div>
                 </div>
             </div>
-            {% endfor %}
+
+            <div class="filters">
+                <div class="filter-group">
+                    <h3 class="filter-title">Степень обжарки</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox"> Светлая
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Средняя
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Тёмная
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3 class="filter-title">Страна</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox"> Бразилия
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Эфиопия
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Руанда
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3 class="filter-title">Плотность</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox"> Высокая
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Средняя
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Низкая
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3 class="filter-title">Кислотность</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox"> Высокая
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Средняя
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox"> Низкая
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <img class="product-image" src="{% static 'img/coffee0.jpg' %}" alt="{{ product.name }}">
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <p class="product-price">{{ product.price }} ₽</p>
+                        <div class="product-actions">
+                            {% if product.product_id in favorite_ids %}
+                            <form action="{% url 'favorites:remove_from_favorites' product.product_id %}">
+                                <button class="action-icon">
+                                    <img src="{% static 'img/heart-filled.png' %}" alt="Удалить из избранного">
+                                </button>
+                            </form>
+                            {% else %}
+                            <form action="{% url 'favorites:add_to_favorites' product.product_id %}">
+                                <button class="action-icon">
+                                    <img src="{% static 'img/heart.png' %}" alt="Добавить в избранное">
+                                </button>
+                            </form>
+                            {% endif %}
+                                {% csrf_token %}
+                            <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
+                                {% csrf_token %}
+                                 <input type="hidden" name="quantity" value="1">
+                                <input type="hidden" name="update" value="False">
+                                <button type="submit" class="action-icon">
+                                    <img src="{% static 'img/cart.png' %}" alt="Добавить в корзину">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-nav">
-            <div class="footer-links">
-                <div class="logo">Logo</div>
-                <div>
-                    <strong>Контакты</strong><br>
-                    .....<br>
-                    <a href="#"><img src="{% static 'img/send.png' %}" alt="VK" width="25"></a>
-                    <a href="#"><img src="{% static 'img/insta.png' %}" alt="Instagram" width="25"></a>
-                    <a href="#"><img src="{% static 'img/mail.png' %}" alt="Telegram" width="25"></a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__col">
+                    <div class="footer-logo">LOGO</div>
+                    <div class="social-links">
+                        <a href="#"><img src="{% static 'img/send.png' %}" alt="VK"></a>
+                        <a href="#"><img src="{% static 'img/insta.png' %}" alt="Instagram"></a>
+                        <a href="#"><img src="{% static 'img/mail.png' %}" alt="Telegram"></a>
+                    </div>
                 </div>
-                <div>
-                    <strong>О компании</strong><br>
-                    .....
+                <div class="footer__col">
+                    <h4 class="footer-title">Контакты</h4>
+                    <p>email@example.com</p>
+                    <p>+7 (123) 456-78-90</p>
                 </div>
-                <div>
-                    <strong>Помощь</strong><br>
-                    .....
+                <div class="footer__col">
+                    <h4 class="footer-title">О компании</h4>
+                    <p>О нас</p>
+                    <p>История</p>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer-title">Помощь</h4>
+                    <p>Доставка</p>
+                    <p>Оплата</p>
                 </div>
             </div>
         </div>

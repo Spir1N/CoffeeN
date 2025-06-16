@@ -1,77 +1,311 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
-
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>CoffeeN - Корзина</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        :root {
+            --primary-color: #6F4E37;
+            --secondary-color: #C4A484;
+            --light-color: #F5F5F5;
+            --dark-color: #333333;
+            --gray-color: #E0E0E0;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .cart-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .cart-header {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .cart-section {
+            background-color: var(--white-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .cart-items {
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-color);
+        }
+
+        .item-name {
+            font-weight: 500;
+            flex: 2;
+        }
+
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .quantity-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid var(--gray-color);
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .item-price {
+            font-weight: 500;
+            flex: 1;
+            text-align: right;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        .total-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--secondary-color);
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .order-info {
+            margin-top: 20px;
+        }
+
+        .info-group {
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            padding: 8px;
+            background-color: var(--gray-color);
+            border-radius: 4px;
+        }
+
+        .comment {
+            font-style: italic;
+            color: #666;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-color);
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .empty-cart-icon {
+            font-size: 50px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .cart-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    {% block content %}
-
-    <div class="cart">
-        {% with total_items=cart|length %}
-            {% if cart|length > 0 %}
-
-            <h1>Ваша корзина:</h1>
-            <table class="cart">
-                <thead>
-                    <tr>
-                        <th>Изображение</th>
-                        <th>Товар</th>
-                        <th>Количество</th>
-                        <th>Цена</th>
-                        <th>Итого</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <div class="container">
+        {% block content %}
+        {% if cart %}
+        <h1 class="cart-header">Корзина</h1>
+        
+        <div class="cart-container">
+            <div class="cart-section">
+                <h2 class="section-title">Товар</h2>
+                <div class="cart-items">
                     {% for item in cart %}
                     {% with product=item.product %}
-                    <tr>
-                        <td><img src="{% static 'img/coffee0.jpg' %}" width="400" height="250" alt="Coffee0"></td>
-                        <td>{{ product.name }}</td>
-                        <td>
-                            <form action="{% url 'cart:cart_add' product.product_id %}" method="post">
-                                {{ item.update_quantity_form.quantity }}
-                                {{ item.update_quantity_form.override }}
-                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10"
-                                    style="margin-left: 10px; width: 50px">
-                                <input type="hidden" name="update" value="true" style="margin-left: 10px">
-                                <input type="submit" value="Обновить">
+                    <div class="cart-item">
+                        <div class="item-name">{{ product.name }}</div>
+                        <div class="item-quantity">
+                            <form action="{% url 'cart:cart_add' product.product_id %}" method="post" class="quantity-control" id="quantity-form-{{ product.product_id }}">
                                 {% csrf_token %}
+                                <button type="button" class="quantity-btn" onclick="updateQuantity('quantity-form-{{ product.product_id }}', -1)">-</button>
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10" class="quantity-input" 
+                                    onchange="document.getElementById('quantity-form-{{ product.product_id }}').submit()">
+                                <button type="button" class="quantity-btn" onclick="updateQuantity('quantity-form-{{ product.product_id }}', 1)">+</button>
+                                <input type="hidden" name="update" value="true">
                             </form>
-                        </td>
-                        <td>{{ product.price }} руб.</td>
-                        <td>{{ item.total_price }}</td>
-                        <td>
-                            <form action="{% url 'cart:cart_remove'  product.product_id %}" method="post">
-                                <input type="submit" value="Удалить">
+
+                            <form action="{% url 'cart:cart_remove' product.product_id %}" method="post">
                                 {% csrf_token %}
+                                <button type="submit" class="remove-btn">Удалить</button>
                             </form>
-                        </td>
-                    </tr>
+
+                            <script>
+                            function updateQuantity(formId, change) {
+                                const form = document.getElementById(formId);
+                                const quantityInput = form.querySelector('input[type="number"]');
+                                let newValue = parseInt(quantityInput.value) + change;
+                                
+                                // Проверяем границы допустимых значений
+                                if (newValue < parseInt(quantityInput.min)) newValue = parseInt(quantityInput.min);
+                                if (newValue > parseInt(quantityInput.max)) newValue = parseInt(quantityInput.max);
+                                
+                                quantityInput.value = newValue;
+                                form.submit(); // Автоматически отправляем форму
+                            }
+                            </script>
+                        </div>
+                        <div class="item-price">{{ item.total_price }} ₽</div>
+                    </div>
                     {% endwith %}
                     {% endfor %}
-                    <tr class="total">
-                        <td>Всего</td>
-                        <td colspan="3"></td>
-                        <td style="font-weight: bold">{{ cart.get_total_price }}руб.</td>
-                    </tr>
-                </tbody>
-            </table>
-            {% else %}
-            <h1>В вашей корзине пусто.</h1>
-                <h3><a href="{% url 'product_list' %}">Можете сделать свой первый заказ :)</a></h3> 
-            {% endif %}
-            <a href="{% url 'orders:order_create' %}">Оформить заказ</a>
-        {% endwith %}
+                </div>
+                
+                <div class="total-section">
+                    <span>Сумма</span>
+                    <span>{{ cart.get_total_price }} ₽</span>
+                </div>
+            </div>
+            
+           <div class="cart-section">
+                <h2 class="section-title">Детали заказа</h2>
+                <div class="order-info">
+                    <div class="info-group">
+                        <div class="info-label">Адрес</div>
+                        <div class="info-value">{{ form.address.value }}</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Имя получателя</div>
+                        <div class="info-value">{{ form.first_name.value }} {{ form.last_name.value }}</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Способ оплаты</div>
+                        <div class="info-value">{{ form.payment_method.value }}</div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <div class="info-label">Комментарий</div>
+                        <div class="info-value comment">{{ form.comments.value }}</div>
+                    </div>
+                    
+                    <a href="{% url 'orders:order_create' %}" class="btn" style="margin-top: 20px; display: inline-block;">
+                        Оформить заказ
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-links">
+            <a href="#" class="footer-link">Контакты</a>
+            <a href="#" class="footer-link">О компании</a>
+            <a href="#" class="footer-link">Помощь</a>
+        </div>
+        
+        {% else %}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">🛒</div>
+            <h1>Ваша корзина пуста</h1>
+            <p>Прежде чем оформить заказ, добавьте товары в корзину</p>
+            <a href="{% url 'product_list' %}" class="btn" style="margin-top: 20px; display: inline-block; width: auto;">В каталог</a>
+        </div>
+        {% endif %}
+        {% endblock %}
     </div>
-    {% endblock %}
-    <p><a href="/">Вернуться на главную</a></p>
-    <p><a href="{% url 'orders' %}">Заказы</a></p>
-    <p><a href="{% url 'product_list' %}">Товары</a></p>
-</body>
-
+</body> 
 </html>
