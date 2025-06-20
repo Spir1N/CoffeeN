@@ -14,6 +14,6 @@
         <p>Сумма заказа: {{ order.total_amount }} руб.</p>
         <p>Номер вашего заказа: <span class="order-id">1023{{ order.id }}</span></p>
     </div>
-    <p><a href="/">Вернуться на главную</a></p>
+    <p><a href="{% url 'product_list' %}">Вернуться на главную</a></p>
 </body>
 </html>

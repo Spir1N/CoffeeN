@@ -26,10 +26,12 @@
             margin: 0;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        .page-header {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
         }
 
         .cart-container {
@@ -37,14 +39,6 @@
             grid-template-columns: 2fr 1fr;
             gap: 30px;
             margin-top: 30px;
-        }
-
-        .cart-header {
-            font-size: 28px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--secondary-color);
         }
 
         .cart-section {
@@ -195,6 +189,7 @@
             font-size: 16px;
             margin-top: 20px;
             width: 100%;
+            text-decoration: none;
         }
 
         @media (max-width: 768px) {
@@ -206,10 +201,33 @@
 </head>
 
 <body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a class="logo" href="{% url 'product_list' %}">LOGO</a>
+                <nav class="nav">
+                    <a class="nav__link active" href="{% url 'cart:cart_detail' %}">Корзина</a>
+                </nav>
+                <div class="header__actions">
+                    <a href="{% url 'favorites:favorite_list' %}" class="action-btn">
+                        <img src="{% static 'img/heart.png' %}" alt="Избранное">
+                    </a>
+                    <a href="{% url 'cart:cart_detail' %}" class="action-btn">
+                        <img src="{% static 'img/cart.png' %}" alt="Корзина">
+                    </a>
+                    <a href="{% url 'userprofile:profile' %}" class="action-btn">
+                        <img src="{% static 'img/user.png' %}" alt="Профиль">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
     <div class="container">
         {% block content %}
         {% if cart %}
-        <h1 class="cart-header">Корзина</h1>
+        <h1 class="page-header">Корзина</h1>
         
         <div class="cart-container">
             <div class="cart-section">
@@ -265,8 +283,8 @@
                 <h2 class="section-title">Детали заказа</h2>
                 <div class="order-info">
                     <div class="info-group">
-                        <div class="info-label">Адрес</div>
-                        <div class="info-value">{{ form.address.value }}</div>
+                        <div class="info-label">Город</div>
+                        <div class="info-value">{{ form.city.value }}</div>
                     </div>
                     
                     <div class="info-group">
@@ -275,20 +293,21 @@
                     </div>
                     
                     <div class="info-group">
-                        <div class="info-label">Способ оплаты</div>
-                        <div class="info-value">{{ form.payment_method.value }}</div>
+                        <div class="info-label">Email</div>
+                        <div class="info-value">{{ form.email.value }}</div>
                     </div>
                     
                     <div class="info-group">
-                        <div class="info-label">Комментарий</div>
-                        <div class="info-value comment">{{ form.comments.value }}</div>
+                        <div class="info-label">Номер дома</div>
+                        <div class="info-value comment">{{ form.room.value }}</div>
                     </div>
                     
                     <a href="{% url 'orders:order_create' %}" class="btn" style="margin-top: 20px; display: inline-block;">
-                        Оформить заказ
+                        Редактировать данные
                     </a>
                 </div>
             </div>
+        </div>
         </div>
         
         <div class="footer-links">

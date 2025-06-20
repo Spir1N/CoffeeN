@@ -1,42 +1,230 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>CoffeeN - Заказы</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        :root {
+            --primary-color: #6F4E37;
+            --secondary-color: #C4A484;
+            --light-color: #F5F5F5;
+            --dark-color: #333333;
+            --gray-color: #E0E0E0;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .page-header {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .profile-section {
+            background-color: var(--white-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-row {
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .info-value {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-color);
+        }
+
+        .edit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .edit-btn:hover {
+            background-color: #5a3d2b;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .orders-table th, .orders-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-color);
+        }
+
+        .orders-table th {
+            background-color: var(--light-color);
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .order-total {
+            font-weight: 700;
+            margin-top: 15px;
+            text-align: right;
+            font-size: 18px;
+        }
+
+        .status-paid {
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--gray-color);
+            margin: 30px 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-color);
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .profile-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Список всех заказов:</h1>
-    <table>
-        <tr>
-            <th>Номер заказа</th>
-            <th>Дата заказа</th>
-            <th>Город</th>
-            <th>Покупатель</th>
-            <th>Сумма заказа</th>
-            <th>Статус</th>
-        </tr>
-        {% for order in list_of_all_orders %}
-        {% if order.user == request.user %}
-        <tr>
-            <td>
-                <a href="{% url 'order-detail' order.id %}">1023{{ order.id }}</a>
-            </td>
-            <td>{{ order.created|date:"d-m-Y" }}</td>
-            <td>{{ order.city }}</td>
-            <td>{{ order.first_name }}</td>
-            <td>{{ order.total_amount }}</td>
-            <td>{{ order.paid|yesno:"Оплачен,Не оплачен" }}</td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-        <form action="{% url 'search' %}" method="GET">
-            {% csrf_token %}
-            <input name="q" type="text" placeholder="Введите имя или фамилию...">
-        </form>
-    </table>
-    <a href="{% url 'cart:cart_detail' %}">Корзина</a>
-    <p><a href="/">Вернуться на главную</a></p>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a class="logo" href="{% url 'product_list' %}">LOGO</a>
+                <nav class="nav">
+                    <a class="nav__link active" href="{% url 'userprofile:profile' %}">Профиль</a>
+                </nav>
+                <div class="header__actions">
+                    <a href="{% url 'favorites:favorite_list' %}" class="action-btn">
+                        <img src="{% static 'img/heart.png' %}" alt="Избранное">
+                    </a>
+                    <a href="{% url 'cart:cart_detail' %}" class="action-btn">
+                        <img src="{% static 'img/cart.png' %}" alt="Корзина">
+                    </a>
+                    <a href="{% url 'userprofile:profile' %}" class="action-btn">
+                        <img src="{% static 'img/user.png' %}" alt="Профиль">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-header">Заказы</h1>
+        <!-- Заказы -->
+        <div class="profile-section">
+            <h2 class="section-title">Заказы</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Номер заказа</th>
+                        <th>Дата заказа</th>
+                        <th>Город</th>
+                        <th>Покупатель</th>
+                        <th>Сумма заказа</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                    {% for order in list_of_all_orders %}
+                    {% if order.user == request.user %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'order-detail' order.id %}">1023{{ order.id }}</a>
+                        </td>
+                        <td>{{ order.created|date:"d-m-Y" }}</td>
+                        <td>{{ order.city }}</td>
+                        <td>{{ order.first_name }}</td>
+                        <td>{{ order.total_amount }}</td>
+                        <td>{{ order.paid|yesno:"Оплачен,Не оплачен" }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+            </table>
+            <div class="order-total">Сумма заказа:{{ order.total_amount }} ₽</div>
+        </div>
+        <a href="{% url 'userprofile:profile' %}" class="btn" style="margin-top: 20px; display: inline-block; width: auto;">Профиль</a>
+
+        <!-- Футер -->
+        <div class="footer-links">
+            <a href="#" class="footer-link">Контакты</a>
+            <a href="#" class="footer-link">О компании</a>
+            <a href="#" class="footer-link">Помощь</a>
+        </div>
+    </div>
 </body>
 </html>
