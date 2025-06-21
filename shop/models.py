@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 class Customer(models.Model):
     customer_id = models.AutoField("ID", primary_key=True)
@@ -42,10 +43,21 @@ class Product(models.Model):
     description = models.TextField("Описание")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to="products/", null=True, blank=True)
+    rating_sum = models.PositiveIntegerField(default=0, editable=False)
+    rating_count = models.PositiveIntegerField(default=0, editable=False)
 
     def __str__(self):
         return f'Товар {self.name}'
     
+    @property
+    def rating_avg(self):
+        if self.rating_count:
+            return round(self.rating_sum / self.rating_count, 1)
+        
+    def get_absolute_url(self):
+        return reverse("reviews:product", args=[self.pk])
+
 
 class OrderItem(models.Model):
     order_item_id = models.AutoField("ID", primary_key=True)

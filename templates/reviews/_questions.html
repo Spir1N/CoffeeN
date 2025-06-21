@@ -1,0 +1,47 @@
+<h4 class="mb-3">Вопросы ({{ product.questions.count }})</h4>
+
+{% for q in product.questions.all %}
+  <div class="border rounded p-2 mb-2 position-relative">
+    <strong>{{ q.author }}</strong>
+    <small class="text-muted">{{ q.created|date:"d.m.Y" }}</small>
+
+    <p class="mt-2 mb-1">{{ q.body|linebreaks }}</p>
+
+    {# если у вопроса уже есть ответ (например, от менеджера) — покажем #}
+    {% if q.answer %}
+      <div class="bg-light border-start ps-2 ms-3">
+        <strong>Ответ:</strong> {{ q.answer|linebreaks }}
+      </div>
+    {% endif %}
+
+    {% if user == q.author %}
+      <form method="post"
+            action="{% url 'reviews:question_del' q.pk %}"
+            hx-delete="{% url 'reviews:question_del' q.pk %}"
+            hx-confirm="Удалить вопрос?"
+            class="position-absolute top-0 end-0">
+        {% csrf_token %}
+        <button type="submit" class="btn-close"></button>
+      </form>
+    {% endif %}
+  </div>
+{% empty %}
+  <p class="text-muted">Пока нет вопросов. Задайте первый!</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+  <h5 class="mt-4">Задать вопрос</h5>
+
+  <form method="post"
+        action="{% url 'reviews:question_add' product.pk %}"
+        hx-post="{% url 'reviews:question_add' product.pk %}"
+        hx-target="#questions" hx-swap="outerHTML">
+    {% csrf_token %}
+    {{ question_form.body }}
+    <button class="btn btn-primary mt-2">Отправить</button>
+  </form>
+
+{% else %}
+  <a href="{% url 'login' %}?next={{ request.path }}#questions"
+     class="btn btn-outline-primary">Войдите, чтобы задать вопрос</a>
+{% endif %}

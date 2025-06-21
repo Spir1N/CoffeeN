@@ -108,7 +108,9 @@
             <div class="product-grid">
                 {% for product in products %}
                 <div class="product-card">
-                    <img class="product-image" src="{% static 'img/coffee0.jpg' %}" alt="{{ product.name }}">
+                    <a href="{{ product.get_absolute_url }}" class="product-link">
+                        <img class="product-image" src="{% static 'img/coffee0.jpg' %}" alt="{{ product.name }}">
+                    </a>
                     <div class="product-info">
                         <h3 class="product-name">{{ product.name }}</h3>
                         <p class="product-price">{{ product.price }} ₽</p>

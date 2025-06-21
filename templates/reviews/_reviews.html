@@ -1,0 +1,46 @@
+<h4 class="mb-3">  ({{ product.rating_count }})</h4>
+
+{% for review in product.reviews.all %}
+  <div class="border rounded p-2 mb-2 position-relative">
+    <strong>{{ review.author }}</strong>
+    <small class="text-muted">{{ review.created|date:"d.m.Y" }}</small>
+    <div>
+      {% for _ in "x"|ljust:review.rating %}
+        <i class="bi-star-fill text-warning"></i>{% endfor %}
+    </div>
+    <p>{{ review.body |linebreaks }}</p>
+
+    {% if user == review.author %}
+      <form method="post" action="{% url 'reviews:review_del' review.pk %}" hx-delete="{% url 'reviews:review_del' review.pk %}" hx-confirm="Удалить отзыв?">
+        {% csrf_token %}
+        <button type="submit" class="btn-close position-absolute top-0 end-0"></button>
+      </form>
+    {% endif %}
+  </div>
+{% empty %}
+  <p class="text-muted">Пока нет отзывов. Будьте первым!</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+  {% if user_review %}
+    <h5 class="mt-4">Вы уже оставили отзыв</h5>
+    <p class="text-muted">Можно 
+        <a href="{% url 'reviews:review_edit' user_review.pk %}">
+            Редактировать
+        </a> или
+        <a href="{% url 'reviews:review_del' user_review.pk %}" 
+          hx-delete="{% url 'reviews:review_del' user_review.pk %}"
+          hx-confirm="Удалить отзыв?">удалить</a>.
+    </p>
+  {% else %}
+  <h5 class="mt-4">Добавить отзыв</h5>
+  <form method="post" action="{% url 'reviews:review_add' product.pk %}" hx-post="{% url 'reviews:review_add' product.pk %}" hx-target="#reviews" hx-swap="outerHTML">
+    {% csrf_token %}
+    {{ review_form.rating }}
+    {{ review_form.body }}
+    <button class="btn btn-primary">Отправить</button>
+  </form>
+  {% endif %}
+{% else %}
+  <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-primary">Войдите, чтобы оставить отзыв</a>
+{% endif %}
