@@ -7,8 +7,10 @@
     <title>Каталог кофе</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    
     <!-- Header -->
     <header class="header">
         <div class="container">
@@ -109,10 +111,30 @@
                 {% for product in products %}
                 <div class="product-card">
                     <a href="{{ product.get_absolute_url }}" class="product-link">
-                        <img class="product-image" src="{% static 'img/coffee0.jpg' %}" alt="{{ product.name }}">
+                    <div class="product-image-container">
+                        {% if product.image %}
+                                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                                <img class="product-image" src="{% static 'img/coffee0.jpg' %}" alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
                     </a>
                     <div class="product-info">
                         <h3 class="product-name">{{ product.name }}</h3>
+                        {% if product.rating_avg %}
+                            <div class="rating">
+                                {% for i in "12345" %}
+                                    {% if i|add:0 <= product.rating_avg %}
+                                        <i class="fas fa-star star"></i>
+                                    {% else %}
+                                        <i class="far fa-star star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="rating-count">({{ product.rating_count }})</span>
+                            </div>
+                        {% else %}
+                            <p class="no-starts">Нет оценок</p>
+                        {% endif %}
                         <p class="product-price">{{ product.price }} ₽</p>
                         <div class="product-actions">
                             {% if product.product_id in favorite_ids %}

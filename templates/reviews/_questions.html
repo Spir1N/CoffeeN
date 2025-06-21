@@ -1,47 +1,265 @@
-<h4 class="mb-3">Вопросы ({{ product.questions.count }})</h4>
+<div class="questions-section">
+    <h4 class="questions-title">Вопросы ({{ product.questions.count }})</h4>
 
-{% for q in product.questions.all %}
-  <div class="border rounded p-2 mb-2 position-relative">
-    <strong>{{ q.author }}</strong>
-    <small class="text-muted">{{ q.created|date:"d.m.Y" }}</small>
+    {% for q in product.questions.all %}
+    <div class="question-card">
+        <div class="question-header">
+            <strong class="question-author">{{ q.author }}</strong>
+            <span class="question-date">{{ q.created|date:"d.m.Y" }}</span>
+            
+            {% if user == q.author %}
+            <form method="post"
+                  action="{% url 'reviews:question_del' q.pk %}"
+                  hx-delete="{% url 'reviews:question_del' q.pk %}"
+                  hx-confirm="Удалить вопрос?"
+                  class="question-actions">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        
+        <div class="question-body">
+            {{ q.body|linebreaks }}
+        </div>
 
-    <p class="mt-2 mb-1">{{ q.body|linebreaks }}</p>
+        {% if q.answer %}
+        <div class="answer-card">
+            <strong class="answer-label">Ответ:</strong>
+            <div class="answer-body">
+                {{ q.answer|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <div class="no-questions">
+        <i class="far fa-question-circle"></i>
+        <p>Пока нет вопросов. Задайте первый!</p>
+    </div>
+    {% endfor %}
 
-    {# если у вопроса уже есть ответ (например, от менеджера) — покажем #}
-    {% if q.answer %}
-      <div class="bg-light border-start ps-2 ms-3">
-        <strong>Ответ:</strong> {{ q.answer|linebreaks }}
-      </div>
+    {% if user.is_authenticated %}
+    <div class="add-question-form">
+        <h5>Задать вопрос</h5>
+        <form method="post"
+              action="{% url 'reviews:question_add' product.pk %}"
+              hx-post="{% url 'reviews:question_add' product.pk %}"
+              hx-target="#questions" 
+              hx-swap="outerHTML">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Ваш вопрос:</label>
+                {{ question_form.body }}
+            </div>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Отправить
+            </button>
+        </form>
+    </div>
+    {% else %}
+    <div class="login-prompt">
+        <a href="{% url 'login' %}?next={{ request.path }}#questions" class="login-btn">
+            <i class="fas fa-sign-in-alt"></i> Войдите, чтобы задать вопрос
+        </a>
+    </div>
     {% endif %}
+</div>
 
-    {% if user == q.author %}
-      <form method="post"
-            action="{% url 'reviews:question_del' q.pk %}"
-            hx-delete="{% url 'reviews:question_del' q.pk %}"
-            hx-confirm="Удалить вопрос?"
-            class="position-absolute top-0 end-0">
-        {% csrf_token %}
-        <button type="submit" class="btn-close"></button>
-      </form>
-    {% endif %}
-  </div>
-{% empty %}
-  <p class="text-muted">Пока нет вопросов. Задайте первый!</p>
-{% endfor %}
+<style>
+    .questions-section {
+        margin-top: 30px;
+    }
 
-{% if user.is_authenticated %}
-  <h5 class="mt-4">Задать вопрос</h5>
+    .questions-title {
+        color: var(--primary-color);
+        font-size: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--gray-color);
+    }
 
-  <form method="post"
-        action="{% url 'reviews:question_add' product.pk %}"
-        hx-post="{% url 'reviews:question_add' product.pk %}"
-        hx-target="#questions" hx-swap="outerHTML">
-    {% csrf_token %}
-    {{ question_form.body }}
-    <button class="btn btn-primary mt-2">Отправить</button>
-  </form>
+    .question-card {
+        background-color: var(--white-color);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        position: relative;
+    }
 
-{% else %}
-  <a href="{% url 'login' %}?next={{ request.path }}#questions"
-     class="btn btn-outline-primary">Войдите, чтобы задать вопрос</a>
-{% endif %}
+    .question-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        position: relative;
+        padding-right: 40px;
+        justify-content: space-between;
+    }
+
+    .question-author {
+        color: var(--primary-color);
+        font-weight: 500;
+    }
+
+    .question-date {
+        color: var(--secondary-color);
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    .question-body {
+        color: var(--dark-color);
+        line-height: 1.6;
+        margin: 15px 0;
+    }
+
+    .answer-card {
+        background-color: var(--light-color);
+        border-left: 3px solid var(--secondary-color);
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 0 6px 6px 0;
+    }
+
+    .answer-label {
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .answer-body {
+        color: var(--dark-color);
+        line-height: 1.6;
+    }
+
+    .question-actions {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
+    .delete-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 22px; /* Увеличиваем размер */
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #422d0e;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .delete-btn:hover {
+        color: rgb(70, 1, 1);
+        background-color: #ff4d4d07;
+        transform: translateY(-50%) scale(1.05); /* Анимация увеличения */
+        box-shadow: 0 2px 8px rgba(255, 77, 77, 0.3);
+    }
+
+    .delete-btn::after {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border: 1px solid #ff4d4d;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover::after {
+        opacity: 1;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+    }
+
+    .no-questions {
+        text-align: center;
+        padding: 30px;
+        color: var(--secondary-color);
+    }
+
+    .no-questions i {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+
+    .add-question-form {
+        margin-top: 30px;
+    }
+
+    .add-question-form h5 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--primary-color);
+        font-weight: 500;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--gray-color);
+        border-radius: 6px;
+        font-family: 'Roboto', sans-serif;
+        min-height: 100px;
+    }
+
+    .submit-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+        background-color: #5a3d2b;
+    }
+
+    .login-prompt {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .login-btn {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background-color 0.3s;
+    }
+
+    .login-btn:hover {
+        background-color: #b39372;
+        color: white;
+    }
+</style>

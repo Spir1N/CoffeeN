@@ -1,46 +1,292 @@
-<h4 class="mb-3">  ({{ product.rating_count }})</h4>
+<div class="reviews-section">
+    <h4 class="reviews-title">Отзывы ({{ product.rating_count }})</h4>
 
-{% for review in product.reviews.all %}
-  <div class="border rounded p-2 mb-2 position-relative">
-    <strong>{{ review.author }}</strong>
-    <small class="text-muted">{{ review.created|date:"d.m.Y" }}</small>
-    <div>
-      {% for _ in "x"|ljust:review.rating %}
-        <i class="bi-star-fill text-warning"></i>{% endfor %}
+    {% for review in product.reviews.all %}
+    <div class="review-card">
+        <div class="review-header">
+            <strong class="review-author">{{ review.author }}</strong>
+            <span class="review-date">{{ review.created|date:"d.m.Y" }}</span>
+            
+            {% if user == review.author %}
+            <form method="post" 
+                action="{% url 'reviews:review_del' review.pk %}" 
+                hx-delete="{% url 'reviews:review_del' review.pk %}"
+                class="review-actions"
+                onsubmit="return confirm('Удалить отзыв?');">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        
+        <div class="review-rating">
+            {% for _ in "x"|ljust:review.rating %}
+                <i class="fas fa-star"></i>
+            {% endfor %}
+        </div>
+        
+        <div class="review-body">
+            {{ review.body|linebreaks }}
+        </div>
+
     </div>
-    <p>{{ review.body |linebreaks }}</p>
+    {% empty %}
+    <div class="no-reviews">
+        <i class="far fa-comment-dots"></i>
+        <p>Пока нет отзывов. Будьте первым!</p>
+    </div>
+    {% endfor %}
 
-    {% if user == review.author %}
-      <form method="post" action="{% url 'reviews:review_del' review.pk %}" hx-delete="{% url 'reviews:review_del' review.pk %}" hx-confirm="Удалить отзыв?">
-        {% csrf_token %}
-        <button type="submit" class="btn-close position-absolute top-0 end-0"></button>
-      </form>
+    {% if user.is_authenticated %}
+        {% if user_review %}
+        <div class="user-review-exists">
+            <p>Вы уже оставили отзыв, но можно 
+                <a href="{% url 'reviews:review_edit' user_review.pk %}" class="edit-link">
+                    Редактировать
+                </a>
+            </p>
+        </div>
+        {% else %}
+        <div class="add-review-form">
+            <h5>Добавить отзыв</h5>
+            <form method="post" action="{% url 'reviews:review_add' product.pk %}" 
+                  hx-post="{% url 'reviews:review_add' product.pk %}" 
+                  hx-target="#reviews" 
+                  hx-swap="outerHTML">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Оценка:</label>
+                    {{ review_form.rating }}
+                </div>
+                <div class="form-group">
+                    <label>Текст отзыва:</label>
+                    {{ review_form.body }}
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Отправить
+                </button>
+            </form>
+        </div>
+        {% endif %}
+    {% else %}
+    <div class="login-prompt">
+        <a href="{% url 'login' %}?next={{ request.path }}" class="login-btn">
+            <i class="fas fa-sign-in-alt"></i> Войдите, чтобы оставить отзыв
+        </a>
+    </div>
     {% endif %}
-  </div>
-{% empty %}
-  <p class="text-muted">Пока нет отзывов. Будьте первым!</p>
-{% endfor %}
+</div>
 
-{% if user.is_authenticated %}
-  {% if user_review %}
-    <h5 class="mt-4">Вы уже оставили отзыв</h5>
-    <p class="text-muted">Можно 
-        <a href="{% url 'reviews:review_edit' user_review.pk %}">
-            Редактировать
-        </a> или
-        <a href="{% url 'reviews:review_del' user_review.pk %}" 
-          hx-delete="{% url 'reviews:review_del' user_review.pk %}"
-          hx-confirm="Удалить отзыв?">удалить</a>.
-    </p>
-  {% else %}
-  <h5 class="mt-4">Добавить отзыв</h5>
-  <form method="post" action="{% url 'reviews:review_add' product.pk %}" hx-post="{% url 'reviews:review_add' product.pk %}" hx-target="#reviews" hx-swap="outerHTML">
-    {% csrf_token %}
-    {{ review_form.rating }}
-    {{ review_form.body }}
-    <button class="btn btn-primary">Отправить</button>
-  </form>
-  {% endif %}
-{% else %}
-  <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-primary">Войдите, чтобы оставить отзыв</a>
-{% endif %}
+<style>
+    .reviews-section {
+        margin-top: 30px;
+    }
+
+    .reviews-title {
+        color: var(--primary-color);
+        font-size: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--gray-color);
+    }
+
+    .review-card {
+        background-color: var(--white-color);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        position: relative;
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        position: relative; /* Добавляем для правильного позиционирования */
+        padding-right: 40px;
+        justify-content: space-between;
+    }
+
+    .review-author {
+        color: var(--primary-color);
+        font-weight: 500;
+    }
+
+    .review-date {
+        color: var(--secondary-color);
+        font-size: 14px;
+    }
+
+    .review-rating {
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+    }
+
+    .review-rating i {
+        margin-right: 3px;
+    }
+
+    .review-body {
+        color: var(--dark-color);
+        line-height: 1.6;
+    }
+
+    .review-actions {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
+    .delete-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 22px; /* Увеличиваем размер */
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #422d0e;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .delete-btn:hover {
+        color: rgb(70, 1, 1);
+        background-color: #ff4d4d07;
+        transform: translateY(-50%) scale(1.05); /* Анимация увеличения */
+        box-shadow: 0 2px 8px rgba(255, 77, 77, 0.3);
+    }
+
+    .delete-btn:hover::after {
+        opacity: 1;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+    }
+
+    .delete-btn::after {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border: 1px solid #ff4d4d;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .no-reviews {
+        text-align: center;
+        padding: 30px;
+        color: var(--secondary-color);
+    }
+
+    .no-reviews i {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+
+    .user-review-exists {
+        background-color: var(--light-color);
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 30px;
+    }
+
+    .user-review-exists h5 {
+        color: var(--primary-color);
+        margin-bottom: 10px;
+    }
+
+    .edit-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .delete-link {
+        color: #ff4d4d;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .add-review-form {
+        margin-top: 30px;
+    }
+
+    .add-review-form h5 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--primary-color);
+        font-weight: 500;
+    }
+
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--gray-color);
+        border-radius: 6px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+    }
+
+    .submit-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+        background-color: #5a3d2b;
+    }
+
+    .login-prompt {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .login-btn {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background-color 0.3s;
+    }
+
+    .login-btn:hover {
+        background-color: #b39372;
+        color: white;
+    }
+</style>
