@@ -121,6 +121,21 @@
             background-color: #b39372;
         }
 
+        .btn-secondary-non {
+            background-color:hsl(30, 100%, 96%);
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-secondary-non:hover {
+            background-color: #e9cfb4;
+        }
+
         .tabs {
             margin-top: 40px;
         }
@@ -234,13 +249,22 @@
                         <input type="hidden" name="quantity" value="1">
                         <button type="submit" class="btn-primary">В корзину</button>
                     </form>
-                    
-                    <form action="{% url 'favorites:add_to_favorites' product.product_id %}" method="post">
+
+                    {% if product.product_id in favorite_ids %}
+                    <form action="{% url 'favorites:remove_from_favorites' product.product_id %}" method="post">
+                    {% csrf_token %}
+                        <button type="action-icon" class="btn-secondary-non">
+                            <i class="far fa-heart"></i> Удалить
+                        </button>
+                        </form>
+                    {% else %}
+                    <form action="{% url 'favorites:add_to_favorites' product.product_id %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn-secondary">
-                            <i class="far fa-heart"></i> В избранное
+                        <button type="action-icon" class="btn-secondary">
+                            <i class="far fa-heart"></i> Добавить
                         </button>
                     </form>
+                    {% endif %}
                 </div>
                 
                 <div class="product-description">
@@ -269,6 +293,37 @@
             </div>
         </div>
     </main>
+
+<!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__col">
+                    <div class="footer-logo">LOGO</div>
+                    <div class="social-links">
+                        <a href="#"><img src="{% static 'img/send.png' %}" alt="VK"></a>
+                        <a href="#"><img src="{% static 'img/insta.png' %}" alt="Instagram"></a>
+                        <a href="#"><img src="{% static 'img/mail.png' %}" alt="Telegram"></a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer-title">Контакты</h4>
+                    <p>email@example.com</p>
+                    <p>+7 (123) 456-78-90</p>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer-title">О компании</h4>
+                    <p>О нас</p>
+                    <p>История</p>
+                </div>
+                <div class="footer__col">
+                    <h4 class="footer-title">Помощь</h4>
+                    <p>Доставка</p>
+                    <p>Оплата</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
         function openTab(tabName) {
