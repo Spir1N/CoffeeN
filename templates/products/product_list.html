@@ -38,11 +38,7 @@
     <!-- Main Content -->
     <main class="main">
         <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">Кофе</h1>
                 <div class="page-controls">
-                    <button id="sort-button"   class="sort-button">Сортировка</button>
-                    <button id="filter-button" class="filter-button">Фильтры</button>
                     <form method="get" class="search-box">
                         <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Поиск">
                         {% for key, value in request.GET.items %}
@@ -51,11 +47,12 @@
                             {% endif %}
                         {% endfor %}
                     </form>
+                    <button id="filter-button" class="filter-button">Фильтры</button>
+                    <button id="sort-button" class="sort-button">Сортировка</button>
                 </div>
-            </div>
 
             <div id="filter-menu" class="filters hidden">
-                <form id="filter-form" method="get">
+                <form id="filter-form" method="get" class="filter-form">
                     <div class="filter-group">
                         <h3 class="filter-title">Степень обжарки</h3>
                         <label>
@@ -117,15 +114,15 @@
                                 {% if 'low' in selected_acidities %}checked{% endif %}> Низкая
                         </label>
                     </div>
-                    <button type="submit">Применить</button>
-                    
+                    <button type="submit" class="sort-button">Применить</button>
+
                     <!-- сохраняем поиск и сортировку -->
                     <input type="hidden" name="q"    value="{{ request.GET.q }}">
                     <input type="hidden" name="sort" value="{{ request.GET.sort }}">
                 </form>
             </div>
 
-            <div id="sort-menu"   class="sort-options hidden">
+            <div id="sort-menu" class="sort-options hidden">
                 <a href="?{{ params|urlencode }}&sort=price">Цена ↑</a>
                 <a href="?{{ params|urlencode }}&sort=-price">Цена ↓</a>
                 <a href="?{{ params|urlencode }}&sort=rating">По рейтингу</a>
@@ -231,8 +228,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const toggle = (el) => {
     el.classList.toggle("hidden");
-    el.style.maxHeight = el.classList.contains("hidden") ? null : el.scrollHeight + "px";
-  };
+    if (el.classList.contains("hidden")) {
+        el.style.maxHeight = null;       // сворачиваем
+    } else {
+        el.style.maxHeight = el.scrollHeight + "px";  // раскрываем
+    }
+};
 
   filterBtn.addEventListener("click", () => toggle(filterBox));
   sortBtn  .addEventListener("click", () => toggle(sortBox));

@@ -112,9 +112,10 @@ body {
     display: flex;
     gap: 15px;
     align-items: center;
+    margin-bottom: 20px;
 }
 
-.control-btn {
+.sort-button, .filter-button {
     padding: 8px 16px;
     background-color: var(--white-color);
     border: 1px solid var(--gray-color);
@@ -123,7 +124,7 @@ body {
     transition: all 0.3s;
 }
 
-.control-btn:hover {
+.sort-button:hover,  .filter-button:hover {
     background-color: var(--gray-color);
 }
 
@@ -383,6 +384,10 @@ body {
     overflow: hidden; 
     transition: 
     max-height .3s ease; 
+    padding: 0;               /* <-- убираем отступы */
+    opacity: 0;               /* опционально – чтобы «растворялось» */
+    border: none;             /* если есть рамка */
+    pointer-events: none;     /* нельзя кликнуть по невидимому блоку */
 }
 
 #filter-menu, #sort-menu { 
