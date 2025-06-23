@@ -22,10 +22,10 @@
                 </nav>
                 <div class="header__actions">
                     <a href="{% url 'favorites:favorite_list' %}" class="action-btn">
-                        <img src="{% static 'img/heart.png' %}" alt="Избранное">
+                        <i class="fa-solid fa-heart heart-icon"></i>
                     </a>
                     <a href="{% url 'cart:cart_detail' %}" class="action-btn">
-                        <img src="{% static 'img/cart.png' %}" alt="Корзина">
+                        <i class="fa-solid fa-cart-plus cart-icon"></i>
                     </a>
                     <a href="{% url 'userprofile:profile' %}" class="action-btn">
                         <img src="{% static 'img/user.png' %}" alt="Профиль">
