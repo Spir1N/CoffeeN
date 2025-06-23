@@ -46,6 +46,17 @@ class Product(models.Model):
     image = models.ImageField(upload_to="products/", null=True, blank=True)
     rating_sum = models.PositiveIntegerField(default=0, editable=False)
     rating_count = models.PositiveIntegerField(default=0, editable=False)
+    ROAST_CHOICES = [
+        ("light",  "Светлая"),
+        ("medium", "Средняя"),
+        ("dark",   "Тёмная"),
+    ]
+
+    roast_level = models.CharField(max_length=6, choices=ROAST_CHOICES, default='medium')
+
+    country = models.CharField(max_length=64, default='Brazil')             # "Brazil", "Ethiopia"…
+    density = models.CharField(max_length=8, default='low')              # high / medium / low
+    acidity = models.CharField(max_length=8, default='low')
 
     def __str__(self):
         return f'Товар {self.name}'
