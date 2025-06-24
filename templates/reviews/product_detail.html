@@ -90,6 +90,7 @@
             display: flex;
             gap: 15px;
             margin: 30px 0;
+            justify-content: flex-start;
         }
 
         .btn-primary {
@@ -180,6 +181,21 @@
             line-height: 1.6;
         }
 
+        .product-description {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .info {
+            font-size: 24px;
+            margin-left: 5px;
+        }
+
+        .product-page {
+            display: flex;
+            flex-direction: column;
+        }
+
         @media (max-width: 768px) {
             .product-grid {
                 grid-template-columns: 1fr;
@@ -268,8 +284,23 @@
                     {% endif %}
                 </div>
                 
-                <div class="product-description">
-                    {{ product.short_description|linebreaks }}
+                <div class="product-page">
+                    <div class="product-description">
+                        <h2>Страна: </h2>
+                        <p class="info"> {{ product.country }}</p>
+                    </div>
+                    <div class="product-description">
+                        <h2>Степень обжарки: </h2>
+                        <p class="info"> {{ product.roast_level }}</p>
+                    </div>
+                    <div class="product-description">
+                        <h2>Кислотность: </h2>
+                        <p class="info"> {{ product.acidity }}</p>
+                    </div>
+                    <div class="product-description">
+                        <h2>Плотность: </h2>
+                        <p class="info"> {{ product.density }}</p>
+                    </div>
                 </div>
             </div>
         </div>
